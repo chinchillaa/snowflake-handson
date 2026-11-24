@@ -34,3 +34,26 @@ SELECT * FROM orders_restored ORDER BY order_id;  -- 元の金額に戻ってい
 CREATE OR REPLACE TABLE orders_backup CLONE orders;
 
 SELECT COUNT(*) FROM orders_backup;
+
+-- ============================================================
+-- チャレンジ: 消したテーブルを戻す（UNDROP）
+-- まず予測してください: DROP したテーブルは戻せると思いますか？
+-- ============================================================
+
+DROP TABLE orders_backup;
+
+-- 消えたことを確認
+SHOW TABLES LIKE 'orders_backup';
+
+-- 戻してみる
+UNDROP TABLE orders_backup;
+
+SELECT COUNT(*) FROM orders_backup;  -- 5件戻っていれば成功
+
+-- ============================================================
+-- 考察（ワークシートに書いてください）
+-- - Time Travel と UNDROP は、どちらも「間違いからの復旧」ですが、
+--   対象がどう違いますか？
+-- - CLONE と通常のコピー（CREATE TABLE AS SELECT）の使い分けは
+--   docs/04_解説_TimeTravelとClone.md を読んで考えてみてください
+-- ============================================================
